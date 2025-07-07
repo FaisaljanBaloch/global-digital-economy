@@ -1,0 +1,69 @@
+---
+execute: 
+  echo: false
+---
+
+```{r}
+#| message: false
+library(tidyverse)
+library(plotly)
+```
+
+Digital gadgets and services are ubiquitous today. Internet is the greatest invention of 21st century. Many businesses are likely to have their presence online, due to which they require digital services to make it possible. Using data from the UN Conference on Trade and Development (UNCTAD) and the World Bank, I looked at the insights into how the digital economy and technology are contributing to global trade.
+
+```{r}
+# Read dataset
+df <- read_csv("data/UNCTAD_DE.csv", show_col_types = FALSE)
+```
+
+```{r}
+# Plot imports and export of digital services from 2010 to 2023.
+df_trade <- df |>
+  filter(
+    INDICATOR %in%
+      c("UNCTAD_DE_DIG_SERVTRADE_ANN_IMP", "UNCTAD_DE_DIG_SERVTRADE_ANN_EXP"),
+    !is.na(OBS_VALUE),
+    !is.na(UNIT_MULT)
+  ) |>
+  mutate(
+    amount_value = OBS_VALUE * 10^UNIT_MULT / 1e9 # Convert to Billions USD
+  ) |>
+  select(
+    amount_value,
+    time_period = TIME_PERIOD,
+    indicator = INDICATOR
+  ) |>
+  group_by(time_period, indicator) |>
+  summarise(
+    amount_value = sum(amount_value, na.rm = TRUE),
+    .groups = "drop"
+  ) |>
+  mutate(
+    indicator = case_when(
+      indicator == "UNCTAD_DE_DIG_SERVTRADE_ANN_EXP" ~ "Exports",
+      indicator == "UNCTAD_DE_DIG_SERVTRADE_ANN_IMP" ~ "Imports",
+      TRUE ~ indicator
+    )
+  )
+
+plot <- df_trade |>
+  ggplot(aes(x = time_period, y = amount_value, color = indicator)) +
+  geom_smooth(
+    method = "gam",
+    se = FALSE,
+    linetype = "dashed",
+    formula = y ~ s(x, bs = "cs")
+  ) +
+  scale_x_continuous(breaks = unique(df_trade$time_period)) +
+  scale_y_continuous(labels = scales::label_dollar(suffix = "B")) + # billion suffix
+  labs(
+    title = "Digitally-deliverable Services Trade (2010-2023)",
+    x = "Year",
+    y = "Value (Billions USD)",
+    color = NULL
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(axis.text.x = element_text(angle = 45))
+
+ggplotly(plot)
+```
