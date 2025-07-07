@@ -1,0 +1,30 @@
+[
+  {
+    "objectID": "sources.html",
+    "href": "sources.html",
+    "title": "Sources",
+    "section": "",
+    "text": "The project uses a dataset from the UN Conference on Trade and Development (UNCTAD) and the World Bank, covering country-level statistics and indicators on the digital economy, particularly in developing countries.\n\nDataset\n\nTitle: Digital Economy and Technology\nSource: World Bank Data360\nLink: View Dataset"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Global Digital Economy",
+    "section": "",
+    "text": "Since digital devices are everywhere, most businesses need online services to stay connected. Using data from the UN Conference on Trade and Development (UNCTAD) and the World Bank, covering country-level statistics and indicators on the digital economy from 2010 to 2023, particularly in developing countries. I used R to look at the insights into how the digital economy and technology are contributing to global trade (Especially, imports and exports of digital services). The trade in digital-deliverable productions has been significantly increasing over the past decade, which currently comprises over 15% of the global GDP."
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "Hello, I’m Faisal Jan from Turbat, Pakistan. I love to work on Data Science and AI projects that are used to solve real world porblems. You can find some of these projects on GitHub or you can discuss your project with me at faisaljanfazal@yahoo.com.\nThis project reveals global digital economy and top exporters/importers of digital services. You can view the project repository on GitHub.\nThis project was created as a part of Kane’s Data Science Bootcamp."
+  },
+  {
+    "objectID": "insights.html#import-distribution-by-country",
+    "href": "insights.html#import-distribution-by-country",
+    "title": "Global Digital Economy",
+    "section": "Import distribution by country",
+    "text": "Import distribution by country"
+  }
+]
