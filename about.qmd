@@ -2,4 +2,8 @@
 title: "About"
 ---
 
-About this site
+Hello, I'm **Faisal Jan** from Turbat, Pakistan. I love to work on Data Science and AI projects that are used to solve real world porblems. You can find some of these projects on [GitHub](https://github.com/FaisaljanBaloch) or you can discuss your project with me at faisaljanfazal@yahoo.com.
+
+This project reveals global digital economy and top exporters/importers of digital services. You can view the [project repository](https://github.com/FaisaljanBaloch/global-digital-economy) on GitHub.
+
+This project was created as a part of [Kane's Data Science Bootcamp](https://bootcamp.davidkane.info/).
