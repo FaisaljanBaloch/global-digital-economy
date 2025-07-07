@@ -1,0 +1,129 @@
+---
+execute: 
+  echo: false
+---
+
+```{r}
+#| message: false
+library(tidyverse)
+library(plotly)
+library(RColorBrewer)
+```
+
+```{r}
+# Read dataset
+df <- read_csv("data/UNCTAD_DE.csv", show_col_types = FALSE)
+```
+
+## Export distribution by country
+
+```{r}
+exports_pie_data <- df |>
+  filter(
+    INDICATOR == "UNCTAD_DE_DIG_SERVTRADE_ANN_EXP",
+    TIME_PERIOD == 2023,
+    REF_AREA != "WLD",
+    !is.na(OBS_VALUE)
+  ) |>
+  group_by(REF_AREA_LABEL) |>
+  summarise(
+    total_export = sum(OBS_VALUE * 10^UNIT_MULT / 1e9, na.rm = TRUE)
+  ) |>
+  arrange(desc(total_export)) |>
+  mutate(
+    rank = row_number(),
+    group = ifelse(rank <= 10, REF_AREA_LABEL, "Others")
+  ) |>
+  group_by(group) |>
+  summarise(total_export = sum(total_export)) |>
+  mutate(
+    percentage = total_export / sum(total_export) * 100,
+    value_billion = total_export, # assumes OBS_VALUE is already in billions
+    label = paste0(
+      group,
+      ": $",
+      round(value_billion, 1),
+      "B (",
+      round(percentage, 1),
+      "%)"
+    ),
+    pull_out = if_else(group == "Others", 0.1, 0) # pull "Others" slice
+  )
+
+# Interactive pie chart with better layout
+plot_ly(
+  data = exports_pie_data,
+  labels = ~group,
+  values = ~value_billion,
+  type = 'pie',
+  text = ~label,
+  textinfo = 'text',
+  hoverinfo = 'text',
+  pull = ~pull_out,
+  marker = list(
+    colors = brewer.pal(n = min(11, nrow(exports_pie_data)), name = "Set3")
+  ),
+  insidetextorientation = 'radial'
+) |>
+  layout(
+    title = list(text = "Top 10 Exporting Countries (2023)", x = 0.5),
+    showlegend = FALSE,
+    margin = list(t = 50, b = 50, l = 50, r = 50)
+  )
+```
+
+## Import distribution by country
+
+```{r}
+imports_pie_data <- df |>
+  filter(
+    INDICATOR == "UNCTAD_DE_DIG_SERVTRADE_ANN_IMP",
+    TIME_PERIOD == 2023,
+    REF_AREA != "WLD",
+    !is.na(OBS_VALUE),
+    !is.na(UNIT_MULT)
+  ) |>
+  mutate(value_billion = OBS_VALUE * 10^UNIT_MULT / 1e9) |> # Convert to Billions USD
+  group_by(REF_AREA_LABEL) |>
+  summarise(total_import = sum(value_billion, na.rm = TRUE)) |>
+  arrange(desc(total_import)) |>
+  mutate(
+    rank = row_number(),
+    group = ifelse(rank <= 10, REF_AREA_LABEL, "Others")
+  ) |>
+  group_by(group) |>
+  summarise(total_import = sum(total_import)) |>
+  mutate(
+    percentage = total_import / sum(total_import) * 100,
+    label = paste0(
+      group,
+      ": $",
+      round(total_import, 1),
+      "B (",
+      round(percentage, 1),
+      "%)"
+    ),
+    pull_out = if_else(group == "Others", 0.1, 0)
+  )
+
+# Create Plotly pie chart
+plot_ly(
+  data = imports_pie_data,
+  labels = ~group,
+  values = ~total_import,
+  type = 'pie',
+  text = ~label,
+  textinfo = 'text',
+  hoverinfo = 'text',
+  pull = ~pull_out,
+  marker = list(
+    colors = brewer.pal(n = min(11, nrow(imports_pie_data)), name = "Set3")
+  ),
+  insidetextorientation = 'radial'
+) |>
+  layout(
+    title = list(text = "Top 10 Importing Countries (2023)", x = 0.5),
+    showlegend = FALSE,
+    margin = list(t = 50, b = 50, l = 50, r = 50)
+  )
+```
