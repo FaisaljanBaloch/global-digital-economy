@@ -1,0 +1,10 @@
+---
+title: "Sources"
+---
+
+The project uses a dataset from the UN Conference on Trade and Development (UNCTAD) and the World Bank, covering country-level statistics and indicators on the digital economy, particularly in developing countries.
+
+### Dataset
+- **Title**: Digital Economy and Technology
+- **Source**: World Bank Data360
+- **Link**: [View Dataset](https://data360.worldbank.org/en/dataset/UNCTAD_DE)
