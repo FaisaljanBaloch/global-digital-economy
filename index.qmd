@@ -9,7 +9,7 @@ library(tidyverse)
 library(plotly)
 ```
 
-Digital gadgets and services are ubiquitous today. Internet is the greatest invention of 21st century. Many businesses are likely to have their presence online, due to which they require digital services to make it possible. Using data from the UN Conference on Trade and Development (UNCTAD) and the World Bank, I looked at the insights into how the digital economy and technology are contributing to global trade.
+Since digital devices are everywhere, most businesses need online services to stay connected. Using data from the UN Conference on Trade and Development (UNCTAD) and the World Bank, covering country-level statistics and indicators on the digital economy, particularly in developing countries. I used R to look at the insights into how the digital economy and technology are contributing to global trade (Especially, imports and exports of digital services). The trade in digital-deliverable productions has been significantly increasing over the past decade, which currently comprises over 15% of the global GDP.
 
 ```{r}
 # Read dataset
