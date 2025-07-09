@@ -15,14 +15,15 @@ library(RColorBrewer)
 df <- read_csv("data/UNCTAD_DE.csv", show_col_types = FALSE)
 ```
 
-## Export distribution by country
+## Export distribution by country (2023)
 
 ```{r}
+# Transforming exports rows
 exports_pie_data <- df |>
   filter(
     INDICATOR == "UNCTAD_DE_DIG_SERVTRADE_ANN_EXP",
     TIME_PERIOD == 2023,
-    REF_AREA != "WLD",
+    REF_AREA != "WLD", # Get rows for individual countries
     !is.na(OBS_VALUE)
   ) |>
   group_by(REF_AREA_LABEL) |>
@@ -49,7 +50,9 @@ exports_pie_data <- df |>
     ),
     pull_out = if_else(group == "Others", 0.1, 0) # pull "Others" slice
   )
+```
 
+```{r}
 # Interactive pie chart with better layout
 plot_ly(
   data = exports_pie_data,
@@ -74,14 +77,15 @@ plot_ly(
 
 The United States leads the list with $680.5 billion in exports, representing 15.7% of total exports among the top countries. The United Kingdom follows with $449.2 billion (10.3%), and Ireland stands at $340.1 billion (7.8%). India, Germany, and China also contribute significantly, ranging from 5% to 6.6% each. Notably, while these top 10 countries collectively hold a major share, the "Others" category accounts for the largest portion at $1,409 billion or 32.4%, indicating that a substantial portion of global exports comes from countries outside the top 10. This highlights both the dominance of key economies and the diverse participation of smaller nations in global trade.
 
-## Import distribution by country
+## Import distribution by country (2023)
 
 ```{r}
+# Transforming imports rows
 imports_pie_data <- df |>
   filter(
     INDICATOR == "UNCTAD_DE_DIG_SERVTRADE_ANN_IMP",
     TIME_PERIOD == 2023,
-    REF_AREA != "WLD",
+    REF_AREA != "WLD", # Get rows for individual countries
     !is.na(OBS_VALUE),
     !is.na(UNIT_MULT)
   ) |>
@@ -107,7 +111,9 @@ imports_pie_data <- df |>
     ),
     pull_out = if_else(group == "Others", 0.1, 0)
   )
+```
 
+```{r}
 # Create Plotly pie chart
 plot_ly(
   data = imports_pie_data,
