@@ -72,6 +72,8 @@ plot_ly(
   )
 ```
 
+The United States leads the list with $680.5 billion in exports, representing 15.7% of total exports among the top countries. The United Kingdom follows with $449.2 billion (10.3%), and Ireland stands at $340.1 billion (7.8%). India, Germany, and China also contribute significantly, ranging from 5% to 6.6% each. Notably, while these top 10 countries collectively hold a major share, the "Others" category accounts for the largest portion at $1,409 billion or 32.4%, indicating that a substantial portion of global exports comes from countries outside the top 10. This highlights both the dominance of key economies and the diverse participation of smaller nations in global trade.
+
 ## Import distribution by country
 
 ```{r}
@@ -127,3 +129,5 @@ plot_ly(
     margin = list(t = 50, b = 50, l = 50, r = 50)
   )
 ```
+
+The United States ranks first with imports totaling $409.7 billion, accounting for 11.1% of the total. Ireland follows closely at $361.8 billion (9.8%), with Germany at $256.6 billion (7%) and the United Kingdom at $218.2 billion (5.9%). Other notable importers include the Netherlands, France, China, Singapore, Japan, and Switzerland, each contributing between 3.4% and 5.6%. Despite these significant figures, the "Others" category dominates, representing $1,455.9 billion or 39.4% of total imports. This underscores the broad distribution of global import activity, with numerous countries outside the top 10 playing a vital role in international trade.
