@@ -9,8 +9,6 @@ library(tidyverse)
 library(plotly)
 ```
 
-Since digital devices are everywhere, most businesses need online services to stay connected. Using data from the UN Conference on Trade and Development (UNCTAD) and the World Bank, covering country-level statistics and indicators on the digital economy from 2010 to 2023, particularly in developing countries. I used R to look at the insights into how the digital economy and technology are contributing to global trade (Especially, imports and exports of digital services). The trade in digital-deliverable productions has been significantly increasing over the past decade, which currently comprises over 15% of the global GDP.
-
 ```{r}
 # Read dataset
 df <- read_csv("data/UNCTAD_DE.csv", show_col_types = FALSE)
@@ -26,7 +24,7 @@ df_trade <- df |>
     !is.na(UNIT_MULT)
   ) |>
   mutate(
-    amount_value = OBS_VALUE * 10^UNIT_MULT / 1e9 # Convert to Billions USD
+    amount_value = OBS_VALUE * 10^UNIT_MULT / 1e12 # Convert to Trillions USD
   ) |>
   select(
     amount_value,
@@ -43,27 +41,34 @@ df_trade <- df |>
       indicator == "UNCTAD_DE_DIG_SERVTRADE_ANN_EXP" ~ "Exports",
       indicator == "UNCTAD_DE_DIG_SERVTRADE_ANN_IMP" ~ "Imports",
       TRUE ~ indicator
-    )
+    ) # Rename default indicators to descriptive names
   )
 
 plot <- df_trade |>
-  ggplot(aes(x = time_period, y = amount_value, color = indicator)) +
+  ggplot(aes(x = time_period, y = amount_value, fill = indicator)) +
+  geom_col(position = "dodge", alpha = 0.7) +  # Bar plot
   geom_smooth(
+    aes(color = indicator),
     method = "gam",
     se = FALSE,
     linetype = "dashed",
-    formula = y ~ s(x, bs = "cs")
+    formula = y ~ s(x, bs = "cs"),
+    linewidth = 1.2
   ) +
   scale_x_continuous(breaks = unique(df_trade$time_period)) +
-  scale_y_continuous(labels = scales::label_dollar(suffix = "B")) + # billion suffix
+  scale_y_continuous(labels = scales::label_dollar(suffix = "T")) + # Trillion suffix
   labs(
-    title = "Digitally-deliverable Services Trade (2010-2023)",
+    title = "Digitally-deliverable Services Trade (2010–2023)",
     x = "Year",
-    y = "Value (Billions USD)",
-    color = NULL
+    y = "Value (Trillions USD)",
+    fill = NULL,
+    color = NULL,
   ) +
   theme_minimal(base_size = 14) +
   theme(axis.text.x = element_text(angle = 45))
 
 ggplotly(plot)
 ```
+
+
+Since digital devices are everywhere, most businesses need online services to stay connected. Using data from the UN Conference on Trade and Development (UNCTAD) and the World Bank, covering country-level statistics and indicators on the digital economy from 2010 to 2023, particularly in developing countries. I used R to look at the insights into how the digital economy and technology are contributing to global trade (Especially, imports and exports of digital services). The digital economy has been significantly increasing over the past decade and is almost doubled now, which currently comprises over 15% of the global GDP.
