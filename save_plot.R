@@ -9,7 +9,8 @@ df_trade <- df |>
     INDICATOR %in%
       c("UNCTAD_DE_DIG_SERVTRADE_ANN_IMP", "UNCTAD_DE_DIG_SERVTRADE_ANN_EXP"),
     !is.na(OBS_VALUE), # Remove rows of empty export/import values
-    !is.na(UNIT_MULT)
+    !is.na(UNIT_MULT),
+    REF_AREA != "WLD", # Include only countries
   ) |>
   mutate(
     amount_value = (OBS_VALUE * 10^UNIT_MULT / 1e12) # Convert to Trillions USD
@@ -26,6 +27,7 @@ df_trade <- df |>
       TRUE ~ indicator
     ) # Rename default indicators to descriptive names
   ) |>
+  distinct() |> # Remove duplicate rows
   group_by(time_period, indicator) |>
   summarise(
     amount_value = sum(amount_value, na.rm = TRUE),
